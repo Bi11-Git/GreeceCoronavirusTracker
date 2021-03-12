@@ -12,6 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Service
 public class CoronavirusDataService {
@@ -31,9 +32,43 @@ public class CoronavirusDataService {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(virusDataURL)).build();
         HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+        StringTokenizer lines = new StringTokenizer(httpResponse.body(), "\n");
+        lines.nextToken();
 
+        while(lines.hasMoreTokens()) {
 
+            StringTokenizer tokens = new StringTokenizer(lines.nextToken(), ",");
 
-        //System.out.println(httpResponse.body());
+            LocationStats stats = new LocationStats();
+
+            stats.setRegion(tokens.nextToken());
+
+            tokens.nextToken();
+            tokens.nextToken();
+            tokens.nextToken();
+
+            stats.setGeoDepartment(tokens.nextToken());
+
+            tokens.nextToken();
+            tokens.nextToken();
+            tokens.nextToken();
+            tokens.nextToken();
+            tokens.nextToken();
+            tokens.nextToken();
+
+            stats.setNewCases(tokens.nextToken());
+
+            LocationStats.setSumOfNewCases(LocationStats.getSumOfNewCases() + Integer.parseInt(stats.getNewCases()));
+
+            newStats.add(stats);
+
+        }
+
+        allStats = newStats;
+
+    }
+
+    public List<LocationStats> getAllStats() {
+        return allStats;
     }
 }

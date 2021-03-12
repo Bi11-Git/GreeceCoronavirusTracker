@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Κρούσματα ανά περιοχή στην Ελλάδα</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Ο κορονοϊός στην Ελλάδα</h1>
+<!--<p>Καταγεγραμμένα κρούσματα στην Ελλάδα καθημερινά</p>-->
+
+<div class="jumbotron">
+    <h1 class="display-4" th:text="${totalReportedCases}"></h1>
+    <p class="lead">Συνολικά νεα κρούσματα σήμερα</p>
+    <hr class="my-4">
+    <!--<p>
+        <span>New cases reported since previous day:</span>
+        <span th:text="${totalReportedCases}"></span>
+    </p>-->
+</div>
+
+<table class="table">
+    <tr>
+        <th>region</th>
+        <th>geoDepartment</th>
+        <th>newCases</th>
+    </tr>
+    <tr th:each="locationstat : ${locationStats}">
+        <td th:text="${locationstat.region}"></td>
+        <td th:text="${locationstat.geoDepartment}"></td>
+        <td th:text="${locationstat.newCases}"></td>
+    </tr>
+</table>
+</div>
+
+</body>
+
+</html>
