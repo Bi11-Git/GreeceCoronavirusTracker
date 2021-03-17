@@ -33,7 +33,27 @@ public class CoronavirusDataService {
         HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         StringTokenizer lines = new StringTokenizer(httpResponse.body(), "\n");
-        lines.nextToken();
+
+        String h = lines.nextToken();
+        StringTokenizer head = new StringTokenizer( h, ",");
+        int cases = 0, j = 0, region = 0, geoDepartment = 0;
+        String tmp;
+
+        while (head.hasMoreTokens()) {
+            tmp = head.nextToken();
+            if( tmp.contentEquals("new_cases")){
+                cases = j;
+            } else if ( tmp.contentEquals("area_gr")) {
+                region = j;
+            } else if (tmp.contentEquals("geo_department_gr")) {
+                geoDepartment = j;
+            }
+
+            j++;
+
+        }
+
+        System.out.println(j + " " + region + " " + geoDepartment + " " + cases);
 
         while(lines.hasMoreTokens()) {
 
@@ -41,22 +61,18 @@ public class CoronavirusDataService {
 
             LocationStats stats = new LocationStats();
 
-            stats.setRegion(tokens.nextToken());
-
-            tokens.nextToken();
-            tokens.nextToken();
-            tokens.nextToken();
-
-            stats.setGeoDepartment(tokens.nextToken());
-
-            tokens.nextToken();
-            tokens.nextToken();
-            tokens.nextToken();
-            tokens.nextToken();
-            tokens.nextToken();
-            tokens.nextToken();
-
-            stats.setNewCases(tokens.nextToken());
+            j = 0;
+            while (tokens.hasMoreTokens()) {
+                tmp = tokens.nextToken();
+                if( j == region) {
+                    stats.setRegion(tmp);
+                } else if ( j == geoDepartment ) {
+                    stats.setGeoDepartment(tmp);
+                } else if(j == cases) {
+                    stats.setNewCases(tmp);
+                }
+                j++;
+            }
 
             LocationStats.setSumOfNewCases(LocationStats.getSumOfNewCases() + Integer.parseInt(stats.getNewCases()));
 
