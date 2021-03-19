@@ -13,23 +13,21 @@
 <div class="container">
 
 <h1>Ο κορονοϊός στην Ελλάδα</h1>
-<!--<p>Καταγεγραμμένα κρούσματα στην Ελλάδα καθημερινά</p>-->
 
 <div class="jumbotron">
     <h1 class="display-4" th:text="${totalReportedCases}"></h1>
     <p class="lead">Συνολικά νεα κρούσματα σήμερα</p>
     <hr class="my-4">
-    <!--<p>
-        <span>New cases reported since previous day:</span>
-        <span th:text="${totalReportedCases}"></span>
-    </p>-->
+    <p>
+        <span th:text="${date}"></span>
+    </p>
 </div>
 
 <table class="table">
     <tr>
-        <th>region</th>
-        <th>geoDepartment</th>
-        <th>newCases</th>
+        <th>Νομός</th>
+        <th>Περιφέρεια</th>
+        <th>Κρούσματα</th>
     </tr>
     <tr th:each="locationstat : ${locationStats}">
         <td th:text="${locationstat.region}"></td>
